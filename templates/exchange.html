@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Money Exchange</h1>
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="exchangeTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="buy-tab" data-bs-toggle="tab" data-bs-target="#buy" type="button" role="tab" aria-controls="buy" aria-selected="true">
+                Buy Currency
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sell-tab" data-bs-toggle="tab" data-bs-target="#sell" type="button" role="tab" aria-controls="sell" aria-selected="false">
+                Sell Currency
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="exchangeTabsContent">
+        <!-- Buy Currency Tab -->
+        <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="buy-tab">
+            <h2 class="mt-4">Buy Currency</h2>
+            <form method="POST" action="/buy_currency">
+                <div class="mb-3">
+                    <label for="from_currency" class="form-label">From Currency</label>
+                    <select class="form-select" id="from_currency" name="from_currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }} - {{ currency[2] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="to_currency" class="form-label">To Currency</label>
+                    <select class="form-select" id="to_currency" name="to_currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }} - {{ currency[2] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exchange_rate" class="form-label">Exchange Rate</label>
+                    <input type="number" class="form-control" id="exchange_rate" name="exchange_rate" step="0.000001" required>
+                </div>
+                <div class="mb-3">
+                    <label for="commission" class="form-label">Commission</label>
+                    <input type="number" class="form-control" id="commission" name="commission" step="0.01">
+                </div>
+                <div class="mb-3">
+                    <label for="payment_method" class="form-label">Payment Method</label>
+                    <select class="form-select" id="payment_method" name="payment_method" required>
+                        <option value="cash">Cash</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Buy Currency</button>
+            </form>
+        </div>
+
+        <!-- Sell Currency Tab -->
+        <div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="sell-tab">
+            <h2 class="mt-4">Sell Currency</h2>
+            <form method="POST" action="/sell_currency">
+                <div class="mb-3">
+                    <label for="from_currency" class="form-label">From Currency</label>
+                    <select class="form-select" id="from_currency" name="from_currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }} - {{ currency[2] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="to_currency" class="form-label">To Currency</label>
+                    <select class="form-select" id="to_currency" name="to_currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }} - {{ currency[2] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="exchange_rate" class="form-label">Exchange Rate</label>
+                    <input type="number" class="form-control" id="exchange_rate" name="exchange_rate" step="0.000001" required>
+                </div>
+                <div class="mb-3">
+                    <label for="commission" class="form-label">Commission</label>
+                    <input type="number" class="form-control" id="commission" name="commission" step="0.01">
+                </div>
+                <div class="mb-3">
+                    <label for="payment_method" class="form-label">Payment Method</label>
+                    <select class="form-select" id="payment_method" name="payment_method" required>
+                        <option value="cash">Cash</option>
+                        <option value="bank">Bank Transfer</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Sell Currency</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS for Tabs -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

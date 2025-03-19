@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Transfers</h1>
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="transfersTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="between-accounts-tab" data-bs-toggle="tab" data-bs-target="#between-accounts" type="button" role="tab" aria-controls="between-accounts" aria-selected="true">
+                Between Accounts
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="send-transfer-tab" data-bs-toggle="tab" data-bs-target="#send-transfer" type="button" role="tab" aria-controls="send-transfer" aria-selected="false">
+                Send Transfer
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="receive-transfer-tab" data-bs-toggle="tab" data-bs-target="#receive-transfer" type="button" role="tab" aria-controls="receive-transfer" aria-selected="false">
+                Receive Transfer
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="transfersTabsContent">
+        <!-- Transfers Between Accounts Tab -->
+        <div class="tab-pane fade show active" id="between-accounts" role="tabpanel" aria-labelledby="between-accounts-tab">
+            <h2 class="mt-4">Transfers Between Accounts</h2>
+            <form method="POST" action="/transfer_between_accounts">
+                <div class="mb-3">
+                    <label for="from_account" class="form-label">From Account</label>
+                    <select class="form-select" id="from_account" name="from_account" required>
+                        <option value="" disabled selected>Select From Account</option>
+                        {% for account in accounts %}
+                        <option value="{{ account[0] }}">{{ account[1] }} ({{ account[3] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="to_account" class="form-label">To Account</label>
+                    <select class="form-select" id="to_account" name="to_account" required>
+                        <option value="" disabled selected>Select To Account</option>
+                        {% for account in accounts %}
+                        <option value="{{ account[0] }}">{{ account[1] }} ({{ account[3] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="currency" class="form-label">Currency</label>
+                    <select class="form-select" id="currency" name="currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Transfer</button>
+            </form>
+        </div>
+
+        <!-- Send Transfer Tab -->
+        <div class="tab-pane fade" id="send-transfer" role="tabpanel" aria-labelledby="send-transfer-tab">
+            <h2 class="mt-4">Send Transfer</h2>
+            <form method="POST" action="/send_transfer">
+                <div class="mb-3">
+                    <label for="sender" class="form-label">Sender</label>
+                    <select class="form-select" id="sender" name="sender" required>
+                        <option value="" disabled selected>Select Sender</option>
+                        <option value="cash">Cash</option>
+                        {% for account in accounts %}
+                        <option value="{{ account[0] }}">{{ account[1] }} ({{ account[3] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3" id="sender_name_field" style="display: none;">
+                    <label for="sender_name" class="form-label">Sender Name</label>
+                    <input type="text" class="form-control" id="sender_name" name="sender_name">
+                </div>
+                <div class="mb-3">
+                    <label for="receiver_name" class="form-label">Receiver Name</label>
+                    <input type="text" class="form-control" id="receiver_name" name="receiver_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="receiver_place" class="form-label">Receiver Place</label>
+                    <input type="text" class="form-control" id="receiver_place" name="receiver_place" required>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="currency" class="form-label">Currency</label>
+                    <select class="form-select" id="currency" name="currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="commission" class="form-label">Commission</label>
+                    <input type="number" class="form-control" id="commission" name="commission" required>
+                </div>
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="branch" class="form-label">Branch Paying the Amount</label>
+                    <select class="form-select" id="branch" name="branch" required>
+                        <option value="" disabled selected>Select Branch</option>
+                        <option value="branch1">Branch 1</option>
+                        <option value="branch2">Branch 2</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Transfer</button>
+            </form>
+        </div>
+
+        <!-- Receive Transfer Tab -->
+        <div class="tab-pane fade" id="receive-transfer" role="tabpanel" aria-labelledby="receive-transfer-tab">
+            <h2 class="mt-4">Receive Transfer</h2>
+            <form method="POST" action="/receive_transfer">
+                <div class="mb-3">
+                    <label for="sender_name" class="form-label">Sender Name</label>
+                    <input type="text" class="form-control" id="sender_name" name="sender_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="receiver_name" class="form-label">Receiver Name</label>
+                    <input type="text" class="form-control" id="receiver_name" name="receiver_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="receiver_place" class="form-label">Receiver Place</label>
+                    <input type="text" class="form-control" id="receiver_place" name="receiver_place" required>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="amount" name="amount" required>
+                </div>
+                <div class="mb-3">
+                    <label for="currency" class="form-label">Currency</label>
+                    <select class="form-select" id="currency" name="currency" required>
+                        <option value="" disabled selected>Select Currency</option>
+                        {% for currency in currencies %}
+                        <option value="{{ currency[1] }}">{{ currency[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea class="form-control" id="note" name="note"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="branch" class="form-label">Responsible Branch</label>
+                    <select class="form-select" id="branch" name="branch" required>
+                        <option value="" disabled selected>Select Branch</option>
+                        <option value="branch1">Branch 1</option>
+                        <option value="branch2">Branch 2</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Receive Transfer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS for Tabs -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // Show/hide sender name field based on selection
+    document.getElementById('sender').addEventListener('change', function() {
+        const senderNameField = document.getElementById('sender_name_field');
+        if (this.value === 'cash') {
+            senderNameField.style.display = 'block';
+        } else {
+            senderNameField.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

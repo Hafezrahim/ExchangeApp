@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Dashboard</h1>
+    <div class="row">
+        <!-- Cards with Animated Borders -->
+        <div class="col-md-3">
+            <div class="card animated-border">
+                <div class="card-body">
+                    <h5 class="card-title">Total Balances</h5>
+                    <p class="card-text">
+                        {% for balance in total_balances %}
+                            {{ balance[0] }}: {{ balance[1] }}<br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card animated-border">
+                <div class="card-body">
+                    <h5 class="card-title">Total Transfers</h5>
+                    <p class="card-text">{{ total_transfers }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card animated-border">
+                <div class="card-body">
+                    <h5 class="card-title">Total Receivable</h5>
+                    <p class="card-text">{{ total_receivable }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card animated-border">
+                <div class="card-body">
+                    <h5 class="card-title">Total Clients</h5>
+                    <p class="card-text">{{ total_clients }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recently Transactions -->
+    <h2 class="mt-4">Recent Transactions</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>From Account</th>
+                <th>To Account</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in recent_transactions %}
+            <tr>
+                <td>{{ transaction[0] }}</td>
+                <td>{{ transaction[1] }}</td>
+                <td>{{ transaction[2] }}</td>
+                <td>{{ transaction[3] }}</td>
+                <td>{{ transaction[4] }}</td>
+                <td>{{ transaction[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Online User -->
+    <h2 class="mt-4">Online User</h2>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">
+                {% if online_user %}
+                    {{ online_user[0] }}
+                {% else %}
+                    No user is currently online.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

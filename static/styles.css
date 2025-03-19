@@ -1,0 +1,10 @@
+.animated-border {
+    border: 2px solid transparent;
+    animation: borderAnimation 2s infinite;
+}
+
+@keyframes borderAnimation {
+    0% { border-color: #007bff; }
+    50% { border-color: #28a745; }
+    100% { border-color: #007bff; }
+}

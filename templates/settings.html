@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Settings</h1>
+
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="company-tab" data-bs-toggle="tab" data-bs-target="#company" type="button" role="tab" aria-controls="company" aria-selected="true">
+                Company Info
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-user-tab" data-bs-toggle="tab" data-bs-target="#add-user" type="button" role="tab" aria-controls="add-user" aria-selected="false">
+                Add User
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="user-list-tab" data-bs-toggle="tab" data-bs-target="#user-list" type="button" role="tab" aria-controls="user-list" aria-selected="false">
+                User List
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-currency-tab" data-bs-toggle="tab" data-bs-target="#add-currency" type="button" role="tab" aria-controls="add-currency" aria-selected="false">
+                Add Currency
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="add-account-type-tab" data-bs-toggle="tab" data-bs-target="#add-account-type" type="button" role="tab" aria-controls="add-account-type" aria-selected="false">
+                Add Account Type
+            </button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="settingsTabsContent">
+        <!-- Company Info Tab -->
+        <div class="tab-pane fade show active" id="company" role="tabpanel" aria-labelledby="company-tab">
+            <h2 class="mt-4">Update Company Information</h2>
+            <form method="POST" action="/update_company_info" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ company_info[2] if company_info else '' }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="manager" class="form-label">Manager</label>
+                    <input type="text" class="form-control" id="manager" name="manager" value="{{ company_info[3] if company_info else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="contact" class="form-label">Contact</label>
+                    <input type="text" class="form-control" id="contact" name="contact" value="{{ company_info[4] if company_info else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ company_info[5] if company_info else '' }}">
+                </div>
+                <div class="mb-3">
+                    <label for="logo" class="form-label">Logo</label>
+                    <input type="file" class="form-control" id="logo" name="logo">
+                    {% if company_info and company_info[1] %}
+                        <img src="{{ company_info[1] }}" alt="Company Logo" width="100" class="mt-2">
+                    {% endif %}
+                </div>
+                <button type="submit" class="btn btn-primary">Update Company Info</button>
+            </form>
+        </div>
+
+        <!-- Add User Tab -->
+        <div class="tab-pane fade" id="add-user" role="tabpanel" aria-labelledby="add-user-tab">
+            <h2 class="mt-4">Add User</h2>
+            <form method="POST" action="/add_user">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="role" class="form-label">Role</label>
+                    <select class="form-select" id="role" name="role" required>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </form>
+        </div>
+
+        <!-- User List Tab -->
+        <div class="tab-pane fade" id="user-list" role="tabpanel" aria-labelledby="user-list-tab">
+            <h2 class="mt-4">User List</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>{{ user[1] }}</td>
+                        <td>{{ user[3] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add Currency Tab -->
+        <div class="tab-pane fade" id="add-currency" role="tabpanel" aria-labelledby="add-currency-tab">
+            <h2 class="mt-4">Add Currency</h2>
+            <form method="POST" action="/add_currency">
+                <div class="mb-3">
+                    <label for="currency_code" class="form-label">Currency Code</label>
+                    <input type="text" class="form-control" id="currency_code" name="currency_code" required>
+                </div>
+                <div class="mb-3">
+                    <label for="currency_name" class="form-label">Currency Name</label>
+                    <input type="text" class="form-control" id="currency_name" name="currency_name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Currency</button>
+            </form>
+        </div>
+
+        <!-- Add Account Type Tab -->
+        <div class="tab-pane fade" id="add-account-type" role="tabpanel" aria-labelledby="add-account-type-tab">
+            <h2 class="mt-4">Add Account Type</h2>
+            <form method="POST" action="/add_account_type">
+                <div class="mb-3">
+                    <label for="type_name" class="form-label">Account Type</label>
+                    <input type="text" class="form-control" id="type_name" name="type_name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Account Type</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS for Tabs -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
