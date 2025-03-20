@@ -1,6 +1,54 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Reports</h1>
-<p>Generate financial reports.</p>
+<div class="container mt-4">
+    <h1>Reports</h1>
+
+    <!-- Searchable Accounts List -->
+    <h2>Accounts List</h2>
+    <div class="mb-3">
+        <input type="text" id="searchAccounts" class="form-control" placeholder="Search accounts...">
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Account Number</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Currency</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody id="accountsTable">
+            {% for account in accounts %}
+            <tr>
+                <td>{{ account[0] }}</td>
+                <td>{{ account[5] }}</td>
+                <td>{{ account[1] }}</td>
+                <td>{{ account[2] }}</td>
+                <td>{{ account[3] }}</td>
+                <td>{{ account[4] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- JavaScript for Search -->
+<script>
+    document.getElementById('searchAccounts').addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#accountsTable tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
 {% endblock %}
